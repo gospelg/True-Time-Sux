@@ -4,6 +4,7 @@ from cryptography.fernet import Fernet
 import sys
 from time import sleep
 import ConfigParser
+import random
 
 def punch(driver_path, website, user, password, clockin):
     if clockin == True:
@@ -35,13 +36,19 @@ def punch(driver_path, website, user, password, clockin):
         driver.switch_to_window(handle)
         driver.close()
     driver.quit()
+
+def wait():
+    wait_minutes = random.randint(0,9)
+    wait_seconds = wait_minutes * 60
+    sleep(wait_seconds)
     
 def main():
+    wait()
     try:
         clockin = sys.argv[1]
     except:
         clockin = 'clockout'
-    key = '' #cypher key goes here
+    key = 'l2GYHWhRkv6rrPgbGGvbAsxQpNo4QF4tNtu1QWEg3uE='
     cipher_suite = Fernet(key)
     Config = ConfigParser.ConfigParser()
     Config.read('setup.ini')
