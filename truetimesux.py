@@ -3,7 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from cryptography.fernet import Fernet
 import sys
 from time import sleep
-import ConfigParser
+import configparser
 import random
 
 def punch(driver_path, website, user, password, clockin):
@@ -39,27 +39,30 @@ def punch(driver_path, website, user, password, clockin):
 
 def wait():
     wait_minutes = random.randint(0,9)
-    wait_seconds = wait_minutes * 60
+    wait_seconds = wait_minutes * 60 +  + random.randint(1,59)
     sleep(wait_seconds)
     
 def main():
+    print('starting')
     wait()
     try:
         clockin = sys.argv[1]
     except:
         clockin = 'clockout'
-    key = '' #encryption key goes here
+    key = 'l2GYHWhRkv6rrPgbGGvbAsxQpNo4QF4tNtu1QWEg3uE='
     cipher_suite = Fernet(key)
-    Config = ConfigParser.ConfigParser()
+    Config = configparser.ConfigParser()
     Config.read('setup.ini')
     driver_path = Config.get('GENERAL', 'driver')
     website = Config.get('GENERAL', 'website')
     user = Config.get('GENERAL', 'user')
-    password = cipher_suite.decrypt(Config.get('GENERAL', 'password'))
+    encrypted_pass = Config.get('GENERAL', 'password').encode('ascii')
+    password = (cipher_suite.decrypt(encrypted_pass)).decode('ascii')
     
     if clockin == '-clockin':
         punch(driver_path, website, user, password, True)
     else:
-        punch(driver_path, website, user, password, False)  
+        pass
+        punch(driver_path, website, user, password, False)
     
 main()
