@@ -48,7 +48,7 @@ def main():
         clockin = sys.argv[1]
     except:
         clockin = 'clockout'
-    key = 'l2GYHWhRkv6rrPgbGGvbAsxQpNo4QF4tNtu1QWEg3uE='
+    key = '' #encryption key goes here
     cipher_suite = Fernet(key)
     Config = ConfigParser.ConfigParser()
     Config.read('setup.ini')
